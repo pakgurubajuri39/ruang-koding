@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ruang Koding - Belajar Jadi Seru!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Variabel Warna Utama */
+        :root {
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --primary-purple: #8b5cf6;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Halaman Login */
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        /* Navbar Keren */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Kontainer Utama dengan Gaya Baru */
+        .main-container {
+            background-color: var(--card-bg);
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            border: 1px solid #e9ecef;
+        }
+
+        /* Kartu dengan Efek Hover */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            border: 1px solid #f1f3f5;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tombol Akses Cepat Berwarna */
+        .color-card {
+            border-radius: 1rem;
+            color: white;
+            padding: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .color-card:hover {
+            transform: scale(1.05);
+        }
+        .card-green-rg { background: linear-gradient(45deg, var(--primary-green), #34d399); }
+        .card-blue-rg { background: linear-gradient(45deg, var(--primary-blue), #60a5fa); }
+        
+        /* Gaya Accordion (Buka-Tutup Materi) */
+        .collapsible {
+            transition: grid-template-rows 300ms ease-in-out;
+            display: grid;
+            grid-template-rows: 0fr;
+        }
+        .collapsible.open {
+            grid-template-rows: 1fr;
+        }
+        .collapsible > div { overflow: hidden; }
+        
+        /* Animasi Panah Accordion */
+        .chevron {
+            transition: transform 0.3s ease-in-out;
+        }
+        button[aria-expanded="true"] .chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Tombol Link di dalam Materi */
+        .materi-link-button {
+            background-color: #f1f3f5;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .materi-link-button:hover {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        /* Tombol yang di-disable */
+        .materi-link-button.disabled {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .materi-link-button.disabled:hover {
+            background-color: #e5e7eb;
+            color: #9ca3af;
+        }
+        
+        /* Gaya Khusus */
+        .logo-text {
+            font-weight: 800;
+            font-size: 1.75rem;
+            background: linear-gradient(90deg, var(--primary-green), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0da271;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-blue);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: 2px solid var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        /* Materi Grid Layout */
+        .materi-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .materi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #1f2937;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .copyright {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-top: 1rem;
+        }
+        
+        /* Hidden class untuk konten yang perlu login */
+        .protected-content {
+            display: none;
+        }
+        
+        /* Badge untuk status user */
+        .user-badge {
+            background: linear-gradient(45deg, var(--primary-green), var(--primary-blue));
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Restricted badge */
+        .restricted-badge {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Halaman Login (Default) -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <span class="text-4xl">🚀</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Ruang Koding</h1>
+                <p class="text-gray-600 mt-2">Masuk untuk mengakses materi pembelajaran</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="username">
+                        Username
+                    </label>
+                    <input 
+                        id="username" 
+                        type="text" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Masukkan username"
+                        required
+                    >
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-medium mb-2" for="password">
+                        Password
+                    </label>
+                    <input 
+                        id="password" 
+                        type="password" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Masukkan password"
+                        required
+                    >
+                </div>
+                
+                <div class="mb-4">
+                    <button 
+                        type="submit" 
+                        id="loginButton"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center"
+                    >
+                        <span id="loginText">Masuk</span>
+                        <div id="loginSpinner" class="loading ml-2 hidden"></div>
+                    </button>
+                </div>
+            </form>
+            
+            <div id="loginError" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm hidden">
+                Username atau password salah. Silakan coba lagi.
+            </div>
+        </div>
+    </div>
+
+    <!-- Konten Utama (Tersembunyi sampai login berhasil) -->
+    <div id="mainContent" class="protected-content">
+        <nav class="navbar p-4 sticky top-0 z-50">
+            <div class="max-w-6xl mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl">🚀</span>
+                    <span class="logo-text">Ruang Koding</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="user-badge" id="userBadge">Halo, Siswa!</span>
+                    <button id="logoutButton" class="text-sm text-gray-700 hover:text-red-600 transition font-medium">
+                        Keluar
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-5xl mx-auto p-4 md:p-8">
+            <section id="dashboard" class="mb-12">
+                <div class="hero-section text-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold mb-3">Selamat Datang, <span id="userGreeting">Jagoan Koding</span>! 👋</h1>
+                    <p class="text-lg text-muted max-w-2xl mx-auto mb-8">
+                        Setiap baris kode adalah langkah baru petualanganmu. Ayo lanjutkan perjalanan belajarmu hari ini!
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="#materi" class="btn-primary">Mulai Belajar</a>
+                        <a href="https://drive.google.com/drive/folders/1Eo65YY-PnWTMR74EVCe6teNSlGzZ54YQ?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-secondary">Lihat Project</a>
+                    </div>
+                </div>
+
+                <div class="main-container">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-10">
+                        <a href="#materi" class="color-card card-green-rg">
+                            <span class="text-5xl mb-3">📚</span>
+                            <span class="text-xl">Mulai Belajar Materi</span>
+                        </a>
+                        <a href="https://drive.google.com/drive/folders/1Eo65YY-PnWTMR74EVCe6teNSlGzZ54YQ?usp=drive_link" class="color-card card-blue-rg" target="_blank" rel="noopener noreferrer">
+                            <span class="text-5xl mb-3">💡</span>
+                            <span class="text-xl">Lihat Ide Project</span>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+                         <div class="card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-3xl">🤖</span>
+                                <h2 class="font-bold text-xl">Tanya Pak Guru AI</h2>
+                            </div>
+                            <p class="text-sm text-muted mb-4">Punya pertanyaan soal koding? Jangan ragu, tanyakan langsung dan dapatkan jawaban instan.</p>
+                            <a href="https://huggingface.co/spaces/pakguru/Gurunya.Ai" target="_blank" rel="noopener noreferrer" class="font-bold text-base" style="color: var(--primary-blue);">Mulai Bertanya →</a>
+                        </div>
+                         <div class="card">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-3xl">✨</span>
+                                <h2 class="font-bold text-xl">Info & Komunitas</h2>
+                            </div>
+                            <ul class="text-sm text-muted space-y-2">
+                                <li><a href="https://www.tiktok.com/@project.nirmala" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-green-600 transition">➤ Cek Project Nirmala di TikTok</a></li>
+                                <li><a href="https://aici-umg.com/article/kurikulum-ai-dan-coding/" target="_blank" rel="noopener noreferrer" class="font-semibold hover:text-green-600 transition">➤ Baca Kurikulum AI dan Coding</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="materi">
+                <h2 class="text-3xl font-bold mb-6 text-center">Materi Pembelajaran</h2>
+                <div class="materi-grid">
+                    
+                    <!-- Materi yang sudah ada sebelumnya -->
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-scratch" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-blue-100 text-blue-600 text-2xl">🧩</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Scratch</h3>
+                                    <p class="text-sm text-muted">Mulai koding dengan blok visual yang seru</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-scratch" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <a href="https://drive.google.com/drive/folders/1Qjh_QIsTWhArUSjP0vn8bFdXWyWhzToI" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">📘 Modul</a>
+                                    <a href="https://drive.google.com/drive/folders/1ao2_bH22_rfZTEO-Lf-gOWSkFgelGyqG" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">🎥 Video</a>
+                                    <a href="https://scratch.mit.edu/projects/editor/?tutorial=getStarted" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Aplikasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-pictoblox" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-green-100 text-green-600 text-2xl">🤖</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">PictoBlox</h3>
+                                    <p class="text-sm text-muted">Belajar Kecerdasan Buatan (AI) & Robotika</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-pictoblox" class="collapsible">
+                           <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <a href="https://drive.google.com/drive/folders/1oQgFhpLmWRehe9BItWxOn5OWi21eB1sn?usp=drive_link" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">📘 Modul</a>
+                                    <a href="https://drive.google.com/drive/folders/1gri1CBhjCeyB9aeNNr5yTq-DOS_rEQ2Y?usp=sharing" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">🎥 Video</a>
+                                    <a href="https://pictoblox.ai" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Aplikasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-codecombat" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-red-100 text-red-600 text-2xl">⚔️</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Code Combat</h3>
+                                    <p class="text-sm text-muted">Belajar koding sambil bermain game petualangan</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-codecombat" class="collapsible">
+                           <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <a href="https://drive.google.com/drive/folders/10AOQV8-ZvTmMoabu_Ulxqo7NXlhXXwHq?usp=sharing" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">📘 Modul</a>
+                                    <a href="https://drive.google.com/drive/folders/1Wpv7ZY6vhur_CCGLioklMNOXWxgw5tN-?usp=sharing" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">🎥 Video</a>
+                                    <a href="https://codecombat.com/students#" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Aplikasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-makecode" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-sky-100 text-sky-600 text-2xl">🎮</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">MakeCode</h3>
+                                    <p class="text-sm text-muted">Membuat game arcade interaktif sendiri</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-makecode" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <a href="https://drive.google.com/drive/folders/1vYqwvusI5jtOILz-V_6TiPsQnSDk4QF8" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">📘 Modul</a>
+                                    <a href="https://drive.google.com/drive/folders/1cN4_9QC0kevDU9ks_LiK5liNHnOvuDBw" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">🎥 Video</a>
+                                    <a href="https://arcade.makecode.com/#editor" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Aplikasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-python" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-amber-100 text-amber-600 text-2xl">🐍</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Python</h3>
+                                    <p class="text-sm text-muted">Bahasa pemrograman teks untuk level lanjut</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-python" class="collapsible">
+                           <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <a href="https://drive.google.com/drive/folders/1_E3-WAQAVZAyWkMCkq8jlP_q4HS1Ri16" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">📘 Modul</a>
+                                    <a href="https://drive.google.com/drive/folders/11-kNMbLrbukl0l1i_jQrWUiDoCMlCGHE?usp=sharing" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">🎥 Video</a>
+                                    <a href="https://replit.com/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Aplikasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-unplugged" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-violet-100 text-violet-600 text-2xl">🧠</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Unplugged (TK)</h3>
+                                    <p class="text-sm text-muted">Aktivitas seru belajar logika tanpa komputer</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-unplugged" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <a href="https://drive.google.com/drive/folders/1VGYjX6p9VU23F-PiLZlKaHjlEnpP5WZS" target="_blank" rel="noopener noreferrer" class="materi-link-button admin-only">📄 Unduh PDF</a>
+                                    <a href="https://studio.code.org/projects/spritelab/xXiEiEc3KiZC-opdiZZPC1ZIbr2nbuJf3PVNqYuAPC4/edit" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Aplikasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Aplikasi Belajar Coding Baru -->
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-tynker" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-orange-100 text-orange-600 text-2xl">🎨</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Tynker</h3>
+                                    <p class="text-sm text-muted">Platform kreatif untuk belajar coding dengan game</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-tynker" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                    <a href="https://www.tynker.com/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Kunjungi Tynker</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-kodu" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-pink-100 text-pink-600 text-2xl">🎯</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Kodu</h3>
+                                    <p class="text-sm text-muted">Membuat game 3D dengan bahasa pemrograman visual</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-kodu" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                    <a href="https://www.kodugamelab.com/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Kunjungi Kodu</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-codemonkey" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-yellow-100 text-yellow-600 text-2xl">🐵</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">CodeMonkey</h3>
+                                    <p class="text-sm text-muted">Belajar coding dengan membantu monyet mendapatkan pisang</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-codemonkey" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                    <a href="https://www.codemonkey.com/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Kunjungi CodeMonkey</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-blockly" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-teal-100 text-teal-600 text-2xl">🧱</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Blockly</h3>
+                                    <p class="text-sm text-muted">Belajar logika pemrograman dengan puzzle blok</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-blockly" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                    <a href="https://blockly.games/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Kunjungi Blockly</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-kodable" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-indigo-100 text-indigo-600 text-2xl">👾</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Kodable</h3>
+                                    <p class="text-sm text-muted">Pengenalan coding untuk anak usia dini</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-kodable" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                    <a href="https://www.kodable.com/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Kunjungi Kodable</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <button class="w-full flex items-center justify-between" data-toggle="panel-grok" aria-expanded="false">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 grid place-items-center rounded-xl bg-rose-100 text-rose-600 text-2xl">🧩</div>
+                                <div class="text-left">
+                                    <h3 class="font-bold text-lg text-gray-900">Grok Learning</h3>
+                                    <p class="text-sm text-muted">Platform belajar coding dengan Python dan web development</p>
+                                </div>
+                            </div>
+                            <span class="chevron text-2xl text-gray-400">⌄</span>
+                        </button>
+                        <div id="panel-grok" class="collapsible">
+                            <div class="pt-4 mt-4 border-t">
+                                <div class="grid grid-cols-1 sm:grid-cols-1 gap-3">
+                                    <a href="https://groklearning.com/" target="_blank" rel="noopener noreferrer" class="materi-link-button">🕹️ Kunjungi Grok Learning</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="max-w-5xl mx-auto px-4 text-center">
+                <p class="text-lg font-medium">by. Pak Guru AI</p>
+                <p class="text-gray-300 mt-2">Research and Development GenZi Education Center</p>
+                <div class="copyright">
+                    <p>Hak Cipta Dilindungi Undang-Undang © 2025</p>
+                    <p class="mt-1">Seluruh materi dan konten dalam platform ini merupakan hak milik GenZi Education Center dan tidak diperkenankan untuk disalin atau disebarluaskan tanpa izin tertulis.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Data user yang valid dengan role
+        const validUsers = {
+            'siswa': { password: 'koding123', role: 'siswa' },
+            'guru': { password: 'guru123', role: 'guru' },
+            'admin': { password: 'bajuri39', role: 'admin' }
+        };
+
+        // Elemen DOM
+        const loginPage = document.getElementById('loginPage');
+        const mainContent = document.getElementById('mainContent');
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const loginText = document.getElementById('loginText');
+        const loginSpinner = document.getElementById('loginSpinner');
+        const loginError = document.getElementById('loginError');
+        const logoutButton = document.getElementById('logoutButton');
+        const userGreeting = document.getElementById('userGreeting');
+        const userBadge = document.getElementById('userBadge');
+
+        // Fungsi untuk mengatur akses berdasarkan role
+        function setAccessByRole(role) {
+            const adminOnlyElements = document.querySelectorAll('.admin-only');
+            
+            if (role === 'admin') {
+                // Admin bisa akses semua
+                adminOnlyElements.forEach(el => {
+                    el.classList.remove('disabled');
+                    el.style.pointerEvents = 'auto';
+                    el.style.opacity = '1';
+                });
+            } else {
+                // Siswa dan guru hanya bisa akses aplikasi
+                adminOnlyElements.forEach(el => {
+                    el.classList.add('disabled');
+                    el.style.pointerEvents = 'none';
+                    el.style.opacity = '0.6';
+                });
+            }
+        }
+
+        // Fungsi login
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Tampilkan loading
+            loginText.textContent = 'Memproses...';
+            loginSpinner.classList.remove('hidden');
+            loginButton.disabled = true;
+            
+            // Simulasi proses login
+            setTimeout(() => {
+                const user = validUsers[username];
+                if (user && user.password === password) {
+                    // Login berhasil
+                    loginError.classList.add('hidden');
+                    
+                    // Simpan status login di localStorage
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', username);
+                    localStorage.setItem('role', user.role);
+                    
+                    // Tampilkan konten utama
+                    loginPage.style.display = 'none';
+                    mainContent.classList.remove('protected-content');
+                    
+                    // Update UI dengan nama user
+                    const greeting = username === 'siswa' ? 'Jagoan Koding' : 
+                                   username === 'guru' ? 'Guru Hebat' : 'Admin';
+                    userGreeting.textContent = greeting;
+                    userBadge.textContent = `Halo, ${username}! (${user.role})`;
+                    
+                    // Set akses berdasarkan role
+                    setAccessByRole(user.role);
+                    
+                } else {
+                    // Login gagal
+                    loginError.classList.remove('hidden');
+                }
+                
+                // Reset form dan loading
+                loginText.textContent = 'Masuk';
+                loginSpinner.classList.add('hidden');
+                loginButton.disabled = false;
+            }, 1000);
+        }
+
+        // Fungsi logout
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            
+            // Reset tampilan
+            mainContent.classList.add('protected-content');
+            loginPage.style.display = 'flex';
+            loginForm.reset();
+            loginError.classList.add('hidden');
+        }
+
+        // Cek status login saat halaman dimuat
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            
+            if (isLoggedIn === 'true') {
+                const username = localStorage.getItem('username') || 'Siswa';
+                const role = localStorage.getItem('role') || 'siswa';
+                
+                loginPage.style.display = 'none';
+                mainContent.classList.remove('protected-content');
+                
+                const greeting = username === 'siswa' ? 'Jagoan Koding' : 
+                               username === 'guru' ? 'Guru Hebat' : 'Admin';
+                userGreeting.textContent = greeting;
+                userBadge.textContent = `Halo, ${username}! (${role})`;
+                
+                // Set akses berdasarkan role
+                setAccessByRole(role);
+            }
+        }
+
+        // Event listeners
+        loginForm.addEventListener('submit', handleLogin);
+        logoutButton.addEventListener('click', handleLogout);
+
+        // Fungsi accordion untuk materi
+        document.querySelectorAll('[data-toggle]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.getAttribute('data-toggle');
+                const panel = document.getElementById(id);
+                const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+                // Tutup semua panel lain
+                document.querySelectorAll('.collapsible.open').forEach(openPanel => {
+                    if (openPanel !== panel) {
+                        openPanel.classList.remove('open');
+                        const otherBtn = document.querySelector(`[data-toggle="${openPanel.id}"]`);
+                        otherBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Toggle panel yang diklik
+                panel.classList.toggle('open');
+                btn.setAttribute('aria-expanded', !isExpanded);
+                
+                // Scroll ke panel yang dibuka
+                if (!isExpanded) {
+                    setTimeout(() => {
+                        btn.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 300);
+                }
+            });
+        });
+
+        // Cek status login saat halaman dimuat
+        checkLoginStatus();
+    </script>
+</body>
+</html>
